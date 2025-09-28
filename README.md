@@ -4,6 +4,12 @@ Uma aplicação de e-commerce completa desenvolvida com Next.js, TypeScript e Ma
 
 ## 🚀 Funcionalidades
 
+### Página Inicial (Lista de Produtos)
+- ✅ Exibição de todos os produtos disponíveis
+- ✅ Cards de produtos com foto, nome, preço e descrição
+- ✅ Navegação para página de detalhes do produto
+- ✅ Design responsivo com layout em grid
+
 ### Página de Produto
 - ✅ Exibição de foto, nome, preço e descrição do produto
 - ✅ Botão "Adicionar ao carrinho" funcional
@@ -13,17 +19,23 @@ Uma aplicação de e-commerce completa desenvolvida com Next.js, TypeScript e Ma
 - ✅ Design responsivo e moderno
 
 ### Carrinho de Compras
+- ✅ **Parallel Routes** - Carrinho implementado como rota paralela (@drawer)
+- ✅ **Intercepting Routes** - Modal drawer intercepta rota /cart
 - ✅ Carrinho flutuante (drawer) acessível de qualquer página
+- ✅ Página dedicada de carrinho (/cart)
 - ✅ Resumo completo: produtos, quantidades, preços
 - ✅ Funcionalidade para remover itens
 - ✅ Alteração de quantidades
 - ✅ Cálculo automático do total
 - ✅ Badge no ícone mostrando quantidade de itens
+- ✅ Persistência de dados no localStorage
 
 ### Backend/API
+- ✅ **GET /api/products** - Lista todos os produtos
 - ✅ **GET /api/products/:id** - Retorna dados detalhados de um produto
 - ✅ Validação de dados e tratamento de erros
 - ✅ Responses padronizadas com TypeScript
+- ✅ Fallback para dados mockados em caso de erro
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -39,29 +51,58 @@ Uma aplicação de e-commerce completa desenvolvida com Next.js, TypeScript e Ma
 ```
 src/
 ├── app/
+│   ├── @drawer/                      # Parallel Route para o carrinho
+│   │   ├── default.tsx               # Botão flutuante do carrinho
+│   │   └── (.)cart/
+│   │       └── page.tsx              # Intercepting Route - Modal drawer
 │   ├── api/
-│   │   ├── products/[id]/route.ts    # API de produtos
-│   │   └── cart/
-│   │       ├── add/route.ts          # API adicionar ao carrinho
-│   │       └── route.ts              # API buscar carrinho
+│   │   └── products/
+│   │       ├── route.ts              # GET /api/products - Lista produtos
+│   │       └── [id]/route.ts         # GET /api/products/[id] - Produto específico
+│   ├── cart/
+│   │   └── page.tsx                  # Página dedicada do carrinho
 │   ├── product/[id]/
 │   │   ├── page.tsx                  # Página dinâmica de produto
 │   │   └── not-found.tsx             # Página 404 personalizada
-│   ├── layout.tsx                    # Layout principal
-│   └── page.tsx                      # Página inicial
+│   ├── layout.tsx                    # Layout principal com slots
+│   └── page.tsx                      # Página inicial - Lista de produtos
 ├── components/
-│   ├── cart/
-│   │   └── CartDrawer.tsx            # Carrinho flutuante
+│   ├── contexts/
+│   │   └── cart/                     # Context API do carrinho
+│   │       ├── cartTypes.ts          # Tipos TypeScript
+│   │       ├── cartContext.tsx       # Context definition
+│   │       ├── cartProvider.tsx      # Provider component
+│   │       ├── cartReducer.tsx       # Reducer para gerenciar estado
+│   │       ├── useCart.tsx           # Hook personalizado
+│   │       └── useCartStorage.tsx    # Hook para localStorage
 │   ├── layout/
-│   │   └── Header.tsx                # Cabeçalho da aplicação
-│   ├── product/
-│   │   └── ProductPage.tsx           # Componente da página de produto
-│   └── providers/
-│       └── MuiThemeProvider.tsx      # Provedor de tema MUI
-├── contexts/
-│   └── CartContext.tsx               # Context do carrinho
-└── types/
-    └── index.ts                      # Definições TypeScript
+│   │   ├── FlexBox.tsx               # Componente de layout flexível
+│   │   ├── Footer.tsx                # Rodapé da aplicação
+│   │   ├── Header.tsx                # Cabeçalho da aplicação
+│   │   └── ProductSelectorQuantity.tsx # Seletor de quantidade
+│   ├── providers/
+│   │   └── MuiThemeProvider.tsx      # Provedor de tema MUI
+│   └── views/
+│       ├── cart/
+│       │   ├── CartContent.tsx       # Conteúdo principal do carrinho
+│       │   ├── CartDrawer.tsx        # Drawer do carrinho
+│       │   ├── CartEmpty.tsx         # Estado vazio do carrinho
+│       │   ├── CartItem.tsx          # Item individual do carrinho
+│       │   └── CartListContainer.tsx # Container da lista de itens
+│       ├── product/
+│       │   └── ProductPage.tsx       # Página de produto individual
+│       └── products/
+│           ├── ProductCard.tsx       # Card de produto na listagem
+│           └── productsPage.tsx      # Página de listagem de produtos
+└── utils/
+    ├── math/
+    │   ├── calculatePercentage.ts    # Cálculo de percentual de desconto
+    │   ├── calculateTotal.ts         # Cálculo de total do carrinho
+    │   └── formatPrice.ts            # Formatação de preços
+    ├── mocks/
+    │   └── products.ts               # Dados mockados dos produtos
+    └── services/
+        └── productService.ts         # Serviço para buscar produtos
 ```
 
 ## 🚦 Como Executar o Projeto
@@ -72,9 +113,9 @@ src/
 
 ### Instalação
 
-1. **Clone ou navegue até o diretório do projeto:**
+1. **Clone o projeto:**
    ```bash
-   cd /home/engebras/Projects/lab/next_e-commerce
+   git clone https://github.com/mathec-x/next_15_e-commerce-overview.git
    ```
 
 2. **Instale as dependências:**
@@ -93,8 +134,8 @@ src/
 ### Scripts Disponíveis
 
 ```bash
-npm run dev      # Inicia servidor de desenvolvimento
-npm run build    # Cria build de produção
+npm run dev      # Inicia servidor de desenvolvimento com Turbopack
+npm run build    # Cria build de produção com Turbopack
 npm run start    # Inicia servidor de produção
 npm run lint     # Executa linting do código
 ```
@@ -121,15 +162,14 @@ npm run lint     # Executa linting do código
 
 ## 🔧 APIs Backend
 
-### GET /api/products/:id
-Retorna detalhes de um produto específico.
+### GET /api/products
+Lista todos os produtos disponíveis.
 
 **Exemplo de resposta:**
 ```json
-{
-  "success": true,
-  "data": {
-    "id": "1",
+[
+  {
+    "id": 1,
     "name": "iPhone 15 Pro Max",
     "price": 7999.99,
     "originalPrice": 8999.99,
@@ -138,6 +178,23 @@ Retorna detalhes de um produto específico.
     "category": "Smartphones",
     "inStock": true
   }
+]
+```
+
+### GET /api/products/:id
+Retorna detalhes de um produto específico.
+
+**Exemplo de resposta:**
+```json
+{
+  "id": 1,
+  "name": "iPhone 15 Pro Max",
+  "price": 7999.99,
+  "originalPrice": 8999.99,
+  "description": "O iPhone 15 Pro Max oferece desempenho excepcional...",
+  "image": "/images/iphone-15-pro-max.jpg",
+  "category": "Smartphones",
+  "inStock": true
 }
 ```
 
@@ -171,7 +228,3 @@ O projeto inclui 4 produtos de demonstração:
 ## 🤝 Contribuições
 
 Este é um projeto de demonstração desenvolvido para fins educacionais. Sugestões e melhorias são sempre bem-vindas!
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
