@@ -1,0 +1,18 @@
+{
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit",
+    },
+    "scm.compactFolders": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.next": true,
+        "**/node_modules": true,
+    },
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+        "next.config.ts": "next-env.d.ts, tsconfig.json, eslint.config.mjs",
+        "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, bun.lock, README.md, .gitignore",
+    }
+}
